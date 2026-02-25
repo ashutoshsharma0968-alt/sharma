@@ -1,33 +1,85 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Assignments</title>
+<title>Assignments - Smart Campus</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="css/style.css">
+<style>
+
+body{
+background:linear-gradient(-45deg,#141e30,#243b55,#0072ff,#141e30);
+background-size:400% 400%;
+animation:gradientMove 10s ease infinite;
+color:white;
+}
+
+.assignment-container{
+padding:100px 60px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:30px;
+}
+
+.assignment-card{
+background:rgba(255,255,255,0.1);
+backdrop-filter:blur(10px);
+padding:30px;
+border-radius:20px;
+transition:0.3s;
+cursor:pointer;
+}
+
+.assignment-card:hover{
+transform:scale(1.05);
+background:rgba(255,255,255,0.2);
+}
+
+.deadline{
+margin-top:15px;
+font-weight:600;
+color:#00ffcc;
+}
+
+</style>
 </head>
 <body>
 
-<nav>
-<h2>Assignments</h2>
-<ul><li><a href="index.html">Home</a></li></ul>
-</nav>
+<h1 style="text-align:center;margin-top:50px;">Assignment Manager</h1>
 
-<div class="page-header">
-<h1>Your Assignments</h1>
-</div>
+<div class="assignment-container">
 
-<div class="container">
-<div class="card">
-<h3>DBMS Assignment</h3>
-<p>Due: 5 March</p>
-<button class="btn">Submit</button>
+<div class="assignment-card">
+<h3>Data Structures</h3>
+<p>Linked List Implementation</p>
+<div class="deadline" id="deadline1"></div>
 </div>
 
-<div class="card">
-<h3>Python Lab</h3>
-<p>Due: 8 March</p>
-<button class="btn">Submit</button>
+<div class="assignment-card">
+<h3>Database Systems</h3>
+<p>SQL Queries & Normalization</p>
+<div class="deadline" id="deadline2"></div>
 </div>
+
+<div class="assignment-card">
+<h3>Operating Systems</h3>
+<p>Process Scheduling Report</p>
+<div class="deadline" id="deadline3"></div>
 </div>
+
+</div>
+
+<script>
+
+function updateDeadline(id, days){
+document.getElementById(id).innerHTML =
+"Deadline in " + days + " days";
+}
+
+updateDeadline("deadline1",3);
+updateDeadline("deadline2",5);
+updateDeadline("deadline3",2);
+
+</script>
 
 </body>
 </html>
