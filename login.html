@@ -1,23 +1,283 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Login</title>
-<link rel="stylesheet" href="css/style.css">
+<title>Smart Campus Login | Arka Jain University</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+/* -------------------------
+   GLOBAL STYLES
+--------------------------*/
+body{
+    margin:0;
+    font-family:'Segoe UI',sans-serif;
+    height:100vh;
+    display:flex;
+    background:#0f2027;
+    overflow:hidden;
+}
+
+/* -------------------------
+   LEFT BRANDING PANEL
+--------------------------*/
+.left-panel{
+    flex:1;
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color:white;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    padding:60px;
+    position:relative;
+}
+
+.left-panel h1{
+    font-size:40px;
+    margin-bottom:20px;
+}
+
+.left-panel p{
+    max-width:400px;
+    text-align:center;
+    opacity:0.8;
+}
+
+/* University Logo */
+.university-logo-large{
+    width:120px;
+    margin-bottom:20px;
+}
+
+.university-logo-small{
+    width:60px;
+    display:block;
+    margin:0 auto 15px auto;
+}
+
+/* Soft Glow Blob */
+.blob{
+    position:absolute;
+    width:300px;
+    height:300px;
+    background:rgba(0,224,255,0.2);
+    border-radius:50%;
+    filter:blur(80px);
+    animation:moveBlob 12s infinite alternate;
+}
+
+@keyframes moveBlob{
+    from{transform:translate(-50px,-50px);}
+    to{transform:translate(50px,50px);}
+}
+
+/* -------------------------
+   RIGHT LOGIN PANEL
+--------------------------*/
+.right-panel{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#f4f6f9;
+}
+
+.login-box{
+    width:380px;
+    padding:40px;
+    background:white;
+    border-radius:15px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.15);
+    animation:fadeUp 0.8s ease;
+}
+
+@keyframes fadeUp{
+    from{opacity:0; transform:translateY(20px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+.login-box h2{
+    margin-bottom:30px;
+    text-align:center;
+    color:#203a43;
+}
+
+/* Floating Input */
+.input-group{
+    position:relative;
+    margin-bottom:25px;
+}
+
+.input-group input{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    outline:none;
+    transition:0.3s;
+}
+
+.input-group label{
+    position:absolute;
+    left:12px;
+    top:12px;
+    color:#888;
+    font-size:14px;
+    transition:0.3s;
+    pointer-events:none;
+}
+
+.input-group input:focus{
+    border-color:#00bcd4;
+}
+
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown) + label{
+    top:-10px;
+    left:8px;
+    font-size:12px;
+    background:white;
+    padding:0 5px;
+    color:#00bcd4;
+}
+
+/* Password toggle */
+.toggle{
+    position:absolute;
+    right:10px;
+    top:12px;
+    cursor:pointer;
+    font-size:14px;
+}
+
+/* Strength Bar */
+.strength{
+    height:5px;
+    width:0;
+    background:red;
+    border-radius:5px;
+    margin-top:5px;
+    transition:0.3s;
+}
+
+/* Options */
+.options{
+    display:flex;
+    justify-content:space-between;
+    font-size:13px;
+    margin-bottom:20px;
+}
+
+/* Button */
+.login-btn{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    background:#203a43;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.login-btn:hover{
+    background:#00bcd4;
+}
+
+/* Loading */
+.loading{
+    opacity:0.6;
+    pointer-events:none;
+}
+
+/* Responsive */
+@media(max-width:900px){
+    .left-panel{display:none;}
+    .right-panel{flex:1;}
+}
+
+</style>
 </head>
+
 <body>
 
-<nav>
-<h2>Student Login</h2>
-<ul><li><a href="index.html">Home</a></li></ul>
-</nav>
+<div class="left-panel">
+<div class="blob"></div>
 
-<div class="form-box">
-<h2>Login</h2>
-<input type="text" placeholder="University ID">
-<input type="password" placeholder="Password">
-<button class="btn" onclick="loginUser()">Login</button>
+<img src="logo.png" class="university-logo-large">
+
+<h1>Smart Campus Hub</h1>
+<p>Secure and seamless access to academic services, exams, fee payments, and campus facilities.</p>
+
 </div>
 
-<script src="js/main.js"></script>
+<div class="right-panel">
+<div class="login-box">
+
+<img src="logo.png" class="university-logo-small">
+
+<h2>University Login</h2>
+
+<div class="input-group">
+<input type="text" id="username" placeholder=" " required>
+<label>University ID</label>
+</div>
+
+<div class="input-group">
+<input type="password" id="password" placeholder=" " onkeyup="checkStrength()" required>
+<label>Password</label>
+<span class="toggle" onclick="togglePassword()">👁</span>
+<div class="strength" id="strengthBar"></div>
+</div>
+
+<div class="options">
+<label><input type="checkbox"> Remember Me</label>
+<a href="#">Forgot Password?</a>
+</div>
+
+<button class="login-btn" id="loginBtn" onclick="login()">Login</button>
+
+</div>
+</div>
+
+<script>
+
+function togglePassword(){
+    let pass=document.getElementById("password");
+    pass.type = pass.type === "password" ? "text" : "password";
+}
+
+function checkStrength(){
+    let pass=document.getElementById("password").value;
+    let bar=document.getElementById("strengthBar");
+
+    if(pass.length < 4){
+        bar.style.width="25%";
+        bar.style.background="red";
+    }
+    else if(pass.length < 8){
+        bar.style.width="60%";
+        bar.style.background="orange";
+    }
+    else{
+        bar.style.width="100%";
+        bar.style.background="green";
+    }
+}
+
+function login(){
+    let btn=document.getElementById("loginBtn");
+    btn.innerText="Logging in...";
+    btn.classList.add("loading");
+
+    setTimeout(()=>{
+        window.location.href="index.html";
+    },1500);
+}
+
+</script>
+
 </body>
 </html>
