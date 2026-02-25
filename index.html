@@ -1,53 +1,283 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Arka Jain University - Smart Campus</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arka Jain University - Smart Campus Hub</title>
+
 <link rel="stylesheet" href="css/style.css">
+<script defer src="js/main.js"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+/* ===== HERO SECTION ===== */
+.hero{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+color:white;
+text-align:center;
+position:relative;
+overflow:hidden;
+}
+
+.hero h1{
+font-size:3rem;
+margin-bottom:15px;
+}
+
+.hero p{
+font-size:1.2rem;
+opacity:0.9;
+}
+
+.start-btn{
+margin-top:30px;
+padding:12px 30px;
+border:none;
+border-radius:30px;
+background:#00c6ff;
+color:white;
+font-weight:600;
+cursor:pointer;
+transition:0.3s;
+}
+
+.start-btn:hover{
+background:#0072ff;
+transform:scale(1.1);
+}
+
+/* Floating AI Animation */
+.ai-float{
+position:absolute;
+bottom:40px;
+right:40px;
+width:80px;
+height:80px;
+background:radial-gradient(circle,#00c6ff,#0072ff);
+border-radius:50%;
+animation:float 4s infinite ease-in-out;
+}
+
+@keyframes float{
+0%{transform:translateY(0)}
+50%{transform:translateY(-20px)}
+100%{transform:translateY(0)}
+}
+
+/* ===== STATS SECTION ===== */
+.stats{
+display:flex;
+justify-content:space-around;
+padding:80px 20px;
+background:#f4f6f9;
+flex-wrap:wrap;
+}
+
+.stat-box{
+text-align:center;
+margin:20px;
+}
+
+.stat-box h2{
+font-size:2.5rem;
+color:#0072ff;
+}
+
+.stat-box p{
+font-weight:500;
+}
+
+/* ===== SERVICES GRID ===== */
+.services{
+padding:80px 40px;
+background:white;
+text-align:center;
+}
+
+.services h2{
+margin-bottom:40px;
+font-size:2rem;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:30px;
+}
+
+.card{
+background:#ffffff;
+padding:30px;
+border-radius:20px;
+box-shadow:0 10px 30px rgba(0,0,0,0.1);
+transition:0.4s;
+cursor:pointer;
+transform-style:preserve-3d;
+}
+
+.card:hover{
+transform:rotateY(8deg) scale(1.05);
+box-shadow:0 20px 40px rgba(0,0,0,0.2);
+}
+
+.card h3{
+margin-bottom:15px;
+color:#0072ff;
+}
+
+.theme-toggle{
+position:fixed;
+top:20px;
+right:20px;
+background:#0072ff;
+color:white;
+padding:10px 15px;
+border-radius:20px;
+cursor:pointer;
+font-size:14px;
+}
+
+.dark-mode{
+background:#111 !important;
+color:white !important;
+}
+
+.dark-mode .stats{
+background:#1b1b1b;
+}
+
+.dark-mode .card{
+background:#222;
+color:white;
+}
+
+</style>
 </head>
 <body>
 
-<nav>
-<h2>Arka Jain University</h2>
-<ul>
-<li><a href="canteen.html">Canteen</a></li>
-<li><a href="events.html">Events</a></li>
-<li><a href="assignments.html">Assignments</a></li>
-<li><a href="assistant.html">Assistant</a></li>
-<li><a href="login.html">Login</a></li>
-</ul>
-</nav>
+<div class="theme-toggle" onclick="toggleTheme()">Toggle Theme</div>
 
-<div class="page-header">
-<h1>Smart Campus Hub</h1>
-<p>Technology Enabled University Experience</p>
+<!-- HERO -->
+<section class="hero">
+<h1 id="typing"></h1>
+<p>Welcome to the Future of Smart Learning & Campus Automation</p>
+<button class="start-btn" onclick="scrollToSection()">Explore Smart Services</button>
+<div class="ai-float"></div>
+</section>
+
+<!-- LIVE CAMPUS STATS -->
+<section class="stats">
+<div class="stat-box">
+<h2 id="students">0</h2>
+<p>Students Enrolled</p>
+</div>
+<div class="stat-box">
+<h2 id="faculty">0</h2>
+<p>Faculty Members</p>
+</div>
+<div class="stat-box">
+<h2 id="events">0</h2>
+<p>Annual Events</p>
+</div>
+<div class="stat-box">
+<h2 id="placements">0</h2>
+<p>Placement Partners</p>
+</div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+<h2>Smart Campus Services</h2>
+<div class="grid">
+
+<div class="card" onclick="location.href='canteen.html'">
+<h3>Canteen Smart Order</h3>
+<p>Live kitchen tracking and online food pre-ordering system.</p>
 </div>
 
-<div class="container">
+<div class="card" onclick="location.href='events.html'">
+<h3>Upcoming Events</h3>
+<p>AI-powered event notifications & registration portal.</p>
+</div>
+
+<div class="card" onclick="location.href='assignments.html'">
+<h3>Assignments</h3>
+<p>Deadline tracking and submission management system.</p>
+</div>
+
+<div class="card" onclick="location.href='assistant.html'">
+<h3>AI Smart Assistant</h3>
+<p>24/7 Campus AI chatbot for instant help & automation.</p>
+</div>
+
+<div class="card" onclick="location.href='login.html'">
+<h3>Student/Faculty Login</h3>
+<p>Secure dashboard access with multi-role authentication.</p>
+</div>
+
 <div class="card">
-<h3>🍔 Smart Canteen</h3>
-<p>Pre-order food & track pickup</p>
-<a href="canteen.html"><button class="btn">Explore</button></a>
+<h3>Exam & Fee Portal</h3>
+<p>Check schedules, results, and make secure payments.</p>
 </div>
 
-<div class="card">
-<h3>📅 University Events</h3>
-<p>Stay updated with campus activities</p>
-<a href="events.html"><button class="btn">Explore</button></a>
 </div>
+</section>
 
-<div class="card">
-<h3>📚 Assignment Tracker</h3>
-<p>Track submission deadlines</p>
-<a href="assignments.html"><button class="btn">Explore</button></a>
-</div>
+<script>
 
-<div class="card">
-<h3>🤖 AI Assistant</h3>
-<p>Instant help for students</p>
-<a href="assistant.html"><button class="btn">Explore</button></a>
-</div>
-</div>
+/* Typing Effect */
+const text = "Arka Jain University - Smart Campus Hub";
+let i = 0;
+function typeWriter(){
+if(i < text.length){
+document.getElementById("typing").innerHTML += text.charAt(i);
+i++;
+setTimeout(typeWriter,60);
+}
+}
+typeWriter();
 
-<script src="main.js"></script>
+/* Counter Animation */
+function animateCounter(id, end){
+let start=0;
+let duration=2000;
+let stepTime=Math.abs(Math.floor(duration/end));
+let obj=document.getElementById(id);
+let timer=setInterval(function(){
+start+=10;
+obj.textContent=start+"+";
+if(start>=end){
+clearInterval(timer);
+obj.textContent=end+"+";
+}
+},stepTime);
+}
+
+window.onload=function(){
+animateCounter("students",5000);
+animateCounter("faculty",350);
+animateCounter("events",120);
+animateCounter("placements",250);
+}
+
+/* Smooth Scroll */
+function scrollToSection(){
+document.getElementById("services").scrollIntoView({behavior:"smooth"});
+}
+
+/* Theme Toggle */
+function toggleTheme(){
+document.body.classList.toggle("dark-mode");
+}
+
+</script>
+
 </body>
 </html>
