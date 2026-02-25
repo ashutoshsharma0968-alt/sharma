@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>AI Assistant - Arka Jain University</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+/* -------------------------
+   BACKGROUND
+--------------------------*/
+body{
+    margin:0;
+    font-family:'Segoe UI',sans-serif;
+    height:100vh;
+    background:linear-gradient(-45deg,#0f2027,#203a43,#2c5364,#00e0ff);
+    background-size:400% 400%;
+    animation:gradientBG 12s ease infinite;
+    overflow:hidden;
+}
+
+@keyframes gradientBG{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+/* -------------------------
+   PARTICLES
+--------------------------*/
+.particles{
+    position:absolute;
+    width:100%;
+    height:100%;
+    z-index:-2;
+}
+
+.particles span{
+    position:absolute;
+    width:8px;
+    height:8px;
+    background:rgba(255,255,255,0.6);
+    border-radius:50%;
+    animation:move linear infinite;
+}
+
+@keyframes move{
+    from{transform:translateY(100vh);}
+    to{transform:translateY(-10vh);}
+}
+
+/* -------------------------
+   AI CORE
+--------------------------*/
+.ai-core{
+    position:absolute;
+    width:350px;
+    height:350px;
+    border-radius:50%;
+    background:radial-gradient(circle,#00e0ff55,#00000000);
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    animation:pulse 4s infinite ease-in-out;
+    z-index:-1;
+}
+
+@keyframes pulse{
+    0%{transform:translate(-50%,-50%) scale(1);}
+    50%{transform:translate(-50%,-50%) scale(1.25);}
+    100%{transform:translate(-50%,-50%) scale(1);}
+}
+
+/* -------------------------
+   CHAT UI
+--------------------------*/
+.chat-container{
+    width:420px;
+    height:560px;
+    margin:50px auto;
+    background:rgba(255,255,255,0.1);
+    backdrop-filter:blur(20px);
+    border-radius:20px;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    box-shadow:0 20px 50px rgba(0,0,0,0.5);
+}
+
+.chat-header{
+    background:#00e0ff;
+    color:black;
+    padding:15px;
+    text-align:center;
+    font-weight:600;
+}
+
+.chat-box{
+    flex:1;
+    padding:15px;
+    overflow-y:auto;
+    display:flex;
+    flex-direction:column;
+}
+
+.message{
+    margin-bottom:12px;
+    padding:10px 15px;
+    border-radius:15px;
+    max-width:80%;
+    animation:fadeIn 0.4s ease;
+    white-space:pre-line;
+}
+
+.user{
+    background:#00e0ff;
+    color:black;
+    align-self:flex-end;
+}
+
+.bot{
+    background:#1e3c52;
+    color:white;
+    align-self:flex-start;
+}
+
+/* -------------------------
+   QUICK OPTIONS
+--------------------------*/
+.quick-options{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:10px;
+}
+
+.quick-btn{
+    background:#00e0ff;
+    border:none;
+    padding:6px 12px;
+    border-radius:15px;
+    cursor:pointer;
+    font-size:12px;
+    transition:0.3s;
+}
+
+.quick-btn:hover{
+    background:white;
+    transform:scale(1.05);
+}
+
+/* -------------------------
+   INPUT
+--------------------------*/
+.chat-input{
+    display:flex;
+    padding:10px;
+    background:rgba(0,0,0,0.3);
+}
+
+.chat-input input{
+    flex:1;
+    padding:10px;
+    border:none;
+    border-radius:20px;
+    outline:none;
+}
+
+.chat-input button{
+    margin-left:10px;
+    padding:10px 20px;
+    border:none;
+    border-radius:20px;
+    background:#00e0ff;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+@keyframes fadeIn{
+    from{opacity:0; transform:translateY(10px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="particles">
+<span style="left:10%; animation-duration:12s;"></span>
+<span style="left:30%; animation-duration:15s;"></span>
+<span style="left:50%; animation-duration:18s;"></span>
+<span style="left:70%; animation-duration:14s;"></span>
+<span style="left:90%; animation-duration:20s;"></span>
+</div>
+
+<div class="ai-core"></div>
+
+<div class="chat-container">
+
+<div class="chat-header">
+AJU Smart AI Assistant 🤖
+</div>
+
+<div class="chat-box" id="chatBox">
+
+<div class="message bot">
+Hello 👋 Welcome to Smart Campus Hub.
+Choose an option below or type your query.
+</div>
+
+<div class="quick-options">
+<button class="quick-btn" onclick="quickReply('canteen')">🍔 Canteen Menu</button>
+<button class="quick-btn" onclick="quickReply('event')">📅 Events</button>
+<button class="quick-btn" onclick="quickReply('assignment')">📚 Assignment</button>
+<button class="quick-btn" onclick="quickReply('login')">🔐 Login</button>
+<button class="quick-btn" onclick="quickReply('exam')">📝 Exam</button>
+<button class="quick-btn" onclick="quickReply('fee')">💳 Fee</button>
+</div>
+
+</div>
+
+<div class="chat-input">
+<input type="text" id="userInput" placeholder="Ask something..." onkeypress="if(event.key==='Enter') sendMessage()">
+<button onclick="sendMessage()">Send</button>
+</div>
+
+</div>
+
+<script>
+
+function quickReply(text){
+    document.getElementById("userInput").value=text;
+    sendMessage();
+}
+
+function sendMessage(){
+    let input=document.getElementById("userInput").value.toLowerCase();
+    if(input.trim()==="") return;
+
+    addMessage(input,"user");
+
+    let response="Sorry, I couldn't understand that. Try selecting a menu option.";
+
+    if(input.includes("canteen")){
+        response="🍔 Canteen Menu:\n• Burger - ₹50\n• Pizza - ₹120\n• Coffee - ₹30\nOpen 9AM - 5PM.";
+    }
+    else if(input.includes("event")){
+        response="📅 Upcoming Events:\n• Tech Fest - 10 March\n• AI Workshop - 15 March\n• Cultural Night - 20 March.";
+    }
+    else if(input.includes("assignment")){
+        response="📚 Assignment Deadlines:\n• DBMS - 5 March\n• Python Lab - 8 March\n• Web Tech - 12 March.";
+    }
+    else if(input.includes("login")){
+        response="🔐 Login Process:\n1. Go to Login page\n2. Enter University ID\n3. Enter Password\n4. Click Sign In.";
+    }
+    else if(input.includes("exam")){
+        response="📝 Exam Schedule:\nMid-Sem: 25 March\nEnd-Sem: 10 May.";
+    }
+    else if(input.includes("fee")){
+        response="💳 Fee Payment Process:\n1. Login to portal\n2. Go to Fee Section\n3. Select semester\n4. Pay via UPI/Card/Net Banking.";
+    }
+
+    setTimeout(()=>addMessage(response,"bot"),500);
+
+    document.getElementById("userInput").value="";
+}
+
+function addMessage(text,type){
+    let chat=document.getElementById("chatBox");
+    let msg=document.createElement("div");
+    msg.classList.add("message",type);
+    msg.innerText=text;
+    chat.appendChild(msg);
+    chat.scrollTop=chat.scrollHeight;
+}
+
+</script>
+
+</body>
+</html>
