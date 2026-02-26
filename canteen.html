@@ -1,39 +1,407 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Smart Canteen</title>
-<link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALL IS WELL – Smart Campus Canteen</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+  --primary:#ff6b00;
+  --bg:#f5f5f5;
+  --card:#ffffff;
+  --text:#111;
+}
+
+body{
+  margin:0;
+  font-family:'Poppins',sans-serif;
+  background:var(--bg);
+  transition:0.3s;
+}
+
+.dark{
+  --bg:#111;
+  --card:#1a1a1a;
+  --text:#ffffff;
+}
+
+header{
+  background:linear-gradient(135deg,#ff6b00,#ff3c00);
+  color:white;
+  padding:15px 30px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:sticky;
+  top:0;
+  z-index:1000;
+}
+
+.logo{
+  font-size:22px;
+  font-weight:700;
+}
+
+.header-right{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  position:relative;
+}
+
+.toggle{
+  cursor:pointer;
+  background:white;
+  color:#ff6b00;
+  padding:6px 12px;
+  border-radius:20px;
+  font-size:14px;
+  font-weight:600;
+}
+
+.profile-container{
+  position:relative;
+}
+
+.profile-icon{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  cursor:pointer;
+  border:2px solid white;
+}
+
+.profile-dropdown{
+  position:absolute;
+  right:0;
+  top:55px;
+  width:260px;
+  background:var(--card);
+  border-radius:15px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.2);
+  display:none;
+  overflow:hidden;
+  animation:fadeIn 0.3s ease;
+}
+
+.profile-header{
+  display:flex;
+  gap:10px;
+  padding:15px;
+  border-bottom:1px solid #eee;
+  align-items:center;
+}
+
+.profile-header img{
+  width:60px;
+  height:60px;
+  border-radius:50%;
+}
+
+.menu-item{
+  padding:12px 15px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.menu-item:hover{
+  background:rgba(0,0,0,0.05);
+}
+
+.logout{
+  color:red;
+}
+
+.container{
+  padding:20px;
+  max-width:1200px;
+  margin:auto;
+}
+
+.section-title{
+  font-size:22px;
+  margin:20px 0;
+  font-weight:600;
+  color:var(--text);
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+  gap:20px;
+}
+
+.card{
+  background:var(--card);
+  border-radius:15px;
+  overflow:hidden;
+  box-shadow:0 5px 20px rgba(0,0,0,0.1);
+  transition:0.3s;
+  cursor:pointer;
+}
+
+.card:hover{
+  transform:translateY(-5px) scale(1.03);
+}
+
+.card img{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+}
+
+.card-content{
+  padding:15px;
+  color:var(--text);
+}
+
+.price{
+  color:var(--primary);
+  font-weight:700;
+}
+
+.btn{
+  background:var(--primary);
+  color:white;
+  padding:8px 15px;
+  border:none;
+  border-radius:20px;
+  cursor:pointer;
+  margin-top:10px;
+}
+
+.cart{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:var(--primary);
+  color:white;
+  padding:15px 20px;
+  border-radius:30px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.modal{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.6);
+  display:none;
+  justify-content:center;
+  align-items:center;
+}
+
+.modal-content{
+  background:var(--card);
+  width:90%;
+  max-width:600px;
+  border-radius:15px;
+  padding:20px;
+  position:relative;
+  color:var(--text);
+}
+
+.close{
+  position:absolute;
+  right:15px;
+  top:15px;
+  cursor:pointer;
+}
+
+.review{
+  background:rgba(0,0,0,0.05);
+  padding:8px;
+  margin:5px 0;
+  border-radius:10px;
+}
+
+.progress{
+  width:100%;
+  background:#ddd;
+  border-radius:10px;
+  overflow:hidden;
+  margin-top:10px;
+}
+
+.progress-bar{
+  height:15px;
+  width:0%;
+  background:var(--primary);
+  transition:0.3s;
+}
+
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(-10px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+</style>
 </head>
+
 <body>
 
-<nav>
-<h2>Smart Canteen</h2>
-<ul><li><a href="index.html">Home</a></li></ul>
-</nav>
+<header>
+  <div class="logo">🍔 ALL IS WELL</div>
 
-<div class="page-header">
-<h1>Order Your Food</h1>
-</div>
+  <div class="header-right">
+    <div class="toggle" onclick="toggleMode()">🌙</div>
+
+    <div class="profile-container">
+      <img src="https://i.pravatar.cc/40" class="profile-icon" onclick="toggleProfile()">
+
+      <div class="profile-dropdown" id="profileMenu">
+        <div class="profile-header">
+          <img src="https://i.pravatar.cc/60">
+          <div>
+            <h4>Ashu</h4>
+            <p>Student ID: 22CS101</p>
+          </div>
+        </div>
+
+        <div class="menu-item" onclick="showOrders()">📦 My Orders</div>
+        <div class="menu-item">📍 Addresses</div>
+        <div class="menu-item">💰 Wallet</div>
+        <div class="menu-item">⚙ Settings</div>
+        <div class="menu-item logout">🚪 Logout</div>
+      </div>
+    </div>
+  </div>
+</header>
 
 <div class="container">
-<div class="card">
-<h3>Burger</h3>
-<p>₹50</p>
-<button class="btn">Order</button>
+  <div class="section-title">🔥 Recommended For You</div>
+  <div class="grid" id="recommended"></div>
+
+  <div class="section-title">🍕 Full Menu</div>
+  <div class="grid" id="menu"></div>
 </div>
 
-<div class="card">
-<h3>Pizza</h3>
-<p>₹120</p>
-<button class="btn">Order</button>
+<div class="cart" onclick="checkout()">🛒 Cart (<span id="cartCount">0</span>)</div>
+
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">✖</span>
+    <div id="modalBody"></div>
+  </div>
 </div>
 
-<div class="card">
-<h3>Coffee</h3>
-<p>₹30</p>
-<button class="btn">Order</button>
+<script>
+
+let cart=[];
+let dark=false;
+
+const items=[
+{name:"Veg Burger",https://share.google/FP7UGCdMx8ch10jlZ"},
+{name:"Cheese Pizza",price:120,img:"https://images.unsplash.com/photo-1548365328-9f547fb0953d"},
+{name:"Cold Coffee",price:50,img:"https://images.unsplash.com/photo-1509042239860-f550ce710b93"},
+{name:"French Fries",price:40,img:"https://images.unsplash.com/photo-1550547660-d9450f859349"},
+{name:"Pasta",price:90,img:"https://images.unsplash.com/photo-1523987355523-c7b5b0723c8e"},
+{name:"Chocolate Shake",price:70,img:"https://images.unsplash.com/photo-1577805947697-89e18249d767"}
+];
+
+function renderMenu(){
+const menu=document.getElementById("menu");
+menu.innerHTML="";
+items.forEach((item,index)=>{
+menu.innerHTML+=`
+<div class="card" onclick="openItem(${index})">
+<img src="${item.img}">
+<div class="card-content">
+<h3>${item.name}</h3>
+<div class="price">₹${item.price}</div>
+<button class="btn" onclick="addToCart(event,${index})">Add</button>
 </div>
-</div>
+</div>`;
+});
+document.getElementById("recommended").innerHTML=menu.innerHTML;
+}
+
+function addToCart(e,index){
+e.stopPropagation();
+cart.push(items[index]);
+document.getElementById("cartCount").innerText=cart.length;
+}
+
+function openItem(index){
+const item=items[index];
+document.getElementById("modalBody").innerHTML=`
+<h2>${item.name}</h2>
+<img src="${item.img}" style="width:100%;border-radius:10px">
+<p>Prepared fresh in ALL IS WELL kitchen.</p>
+<h3>₹${item.price}</h3>
+<button class="btn" onclick="addToCart(event,${index})">Add to Cart</button>
+<h4>Reviews</h4>
+<div class="review">⭐ 5 - Amazing taste!</div>
+<div class="review">⭐ 4 - Loved it!</div>`;
+document.getElementById("modal").style.display="flex";
+}
+
+function closeModal(){
+document.getElementById("modal").style.display="none";
+}
+
+function toggleMode(){
+dark=!dark;
+document.body.classList.toggle("dark");
+}
+
+function toggleProfile(){
+const menu=document.getElementById("profileMenu");
+menu.style.display=menu.style.display==="block"?"none":"block";
+}
+
+window.onclick=function(e){
+if(!e.target.closest('.profile-container')){
+document.getElementById("profileMenu").style.display="none";
+}
+}
+
+function showOrders(){
+document.getElementById("modalBody").innerHTML=`
+<h2>📦 My Orders</h2>
+<div class="review">#1021 - Veg Burger - Delivered</div>
+<div class="review">#1022 - Pizza - Preparing</div>`;
+document.getElementById("modal").style.display="flex";
+}
+
+function checkout(){
+if(cart.length==0){alert("Cart is empty");return;}
+document.getElementById("modalBody").innerHTML=`
+<h2>Order Tracking</h2>
+<div class="progress"><div class="progress-bar" id="bar"></div></div>
+<p id="eta">ETA: 5:00</p>`;
+document.getElementById("modal").style.display="flex";
+startTracking();
+}
+
+function startTracking(){
+let width=0;
+let time=300;
+const bar=document.getElementById("bar");
+const eta=document.getElementById("eta");
+
+const interval=setInterval(()=>{
+width+=1;
+time--;
+bar.style.width=width+"%";
+eta.innerText="ETA: "+Math.floor(time/60)+":"+("0"+time%60).slice(-2);
+if(width>=100){
+clearInterval(interval);
+eta.innerText="🎉 Order Ready!";
+}
+},100);
+}
+
+renderMenu();
+
+</script>
 
 </body>
 </html>
